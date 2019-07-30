@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Cards = require('../model/cards');
-const Styles = require('../model/style');
+const Tags = require('../model/tags');
 const Archs = require('../model/arch');
+const Materials = require('../model/materials');
 
 const config = require('../config/config');
 //cards
@@ -30,25 +31,25 @@ router.get('/showCard', async (req, res) => {
     }
 });
 //style
-router.post('/createStyle', async (req, res) => {
-    const {style} = req.body;
+router.post('/createTag', async (req, res) => {
+    const {tag} = req.body;
     
-    if (!style) return res.status(400).send({ error: 'Dados insuficientes!' });
+    if (!tag) return res.status(400).send({ error: 'Dados insuficientes!' });
     
 
     try {
-        const style = await Styles.create(req.body);
-        return res.status(201).send({style});
+        const tag = await Tags.create(req.body);
+        return res.status(201).send({tag});
     }
     catch (err) {
-        return res.status(500).send({ error: 'Erro ao buscar stylo!' });
+        return res.status(500).send({ error: 'Erro ao buscar tag!' });
     }
 });
 
-router.get('/showStyle', async (req, res) => {
+router.get('/showTags', async (req, res) => {
     try {
-        const style = await Styles.find({});
-        return res.send(style);
+        const tag = await Tags.find({});
+        return res.send(tag);
     }
     catch (err) {
         return res.status(500).send({ error: 'Erro na consulta de Stylos!' });
@@ -75,6 +76,32 @@ router.get('/showArch', async (req, res) => {
     try {
         const arch = await Archs.find({});
         return res.send(arch);
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Erro na consulta de archs!' });
+    }
+});
+//materials
+router.post('/createMaterial', async (req, res) => {
+    const {material} = req.body;
+    
+    if (!material) return res.status(400).send({ error: 'Dados insuficientes!' });
+    
+
+    try {
+        const material = await Materials.create(req.body);
+        return res.status(201).send({material});
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Erro ao buscar arch!' });
+    }
+});
+
+
+router.get('/showMaterials', async (req, res) => {
+    try {
+        const material = await Materials.find({});
+        return res.send(material);
     }
     catch (err) {
         return res.status(500).send({ error: 'Erro na consulta de archs!' });
