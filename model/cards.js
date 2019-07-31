@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CardSchema = new Schema({
-    picture: { type: String, required: true, unique:false },
-    photographer: { type: String, required: true },
-    description: { type: String, required: true },
-    size: { type: String, required: true },
-    arch: { type: String, required: true },
-    year: { type: String, required: true },
-    providers: { type: String, required: true },
-    style: { type: String, required: true },
-    subjects: {type: String, required: true},
+    picture: { type: String, required: false, unique:false },
+    photographer: { type: String, required: false },
+    description: { type: String, required: false },
+    size: { type: String, required: false },
+    arch: { type: String, required: false },
+    year: { type: String, required: false },
+    //providers=project name
+    providers: { type: String, required: false },
+    style: { type: Array, required: false },
+    subjects: {type: Array, required: false},
     created: { type: Date, default: Date.now }
 });
 

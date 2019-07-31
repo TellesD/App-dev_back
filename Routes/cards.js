@@ -9,9 +9,9 @@ const config = require('../config/config');
 //cards
 router.post('/createCard', async (req, res) => {
     const { picture, photographer, description, size, arch, year, providers, style, subjects } = req.body;
-    if (!picture || !photographer || !description) return res.status(400).send({ error: 'Dados insuficientes!' });
-    if (!size || !arch || !year) return res.status(400).send({ error: 'Dados insuficientes!' });
-    if (!style|| !providers|| !subjects) return res.status(400).send({ error: 'Dados insuficientes!' });
+   // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
+   // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!' });
+    //if (style|| providers|| subjects) return res.status(400).send({ error: 'Dados insuficientes!' });
 
     try {
         const card = await Cards.create(req.body);
