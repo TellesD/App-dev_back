@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CardSchema = new Schema({
+const DaySchema = new Schema({
     picture: { type: String, required: false, unique:false },
     photographer: { type: String, required: false },
     description: { type: String, required: false },
@@ -16,5 +16,5 @@ const CardSchema = new Schema({
     created: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Card', CardSchema);
+module.exports = mongoose.model('Card', DaySchema);
 //picture, photographer, description, size, arch, age, providers, style

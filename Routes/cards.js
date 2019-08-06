@@ -8,7 +8,7 @@ const Materials = require('../model/materials');
 const config = require('../config/config');
 //cards
 router.post('/createCard', async (req, res) => {
-    const { picture, photographer, description, size, arch, year, providers, style, subjects } = req.body;
+    const { picture, photographer, description, size, arch, year, providers, style, subjects, like } = req.body;
    // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
    // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!' });
     //if (style|| providers|| subjects) return res.status(400).send({ error: 'Dados insuficientes!' });
@@ -107,6 +107,30 @@ router.get('/showMaterials', async (req, res) => {
         return res.status(500).send({ error: 'Erro na consulta de archs!' });
     }
 });
+//like
+router.put('/likecard', async (req, res) =>{
+    const {id}= req.body;
+    
+      Cards.findById(id, function(err, cards) {
+          try{
+            console.log(cards)
+              cards.like++;
+              cards.save((err) => {
+                if(err) {
+                    Console.log(id);
+                  return res.status(400);
+                } else {
+                    return res.status(200).send({cards});
+                }
+            });
+           
+        }
+          catch(err){
+              return res.status(400);
+          }
+      })
+      
+})
 
 
 
