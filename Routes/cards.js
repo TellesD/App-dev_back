@@ -108,8 +108,8 @@ router.get('/showMaterials', async (req, res) => {
     }
 });
 //like
-router.put('/likecard', async (req, res) =>{
-    const {id}= req.body;
+router.put('/likecard/:id', async (req, res) =>{
+    const id = req.params.id;
     
       Cards.findById(id, function(err, cards) {
           try{
