@@ -4,7 +4,7 @@ const Cards = require('../model/cards');
 const Tags = require('../model/tags');
 const Archs = require('../model/arch');
 const Materials = require('../model/materials');
-
+const Day= require('../model/day');
 const config = require('../config/config');
 //cards
 router.post('/createCard', async (req, res) => {
@@ -131,6 +131,32 @@ router.put('/likecard/:id', async (req, res) =>{
       })
       
 })
+
+//day
+router.put('/createDay', async (req, res) => {
+    const { picture, photographer, description, size, arch, year, providers, style, subjects,textW, like } = req.body;
+   // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
+   // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!'});
+    //if (style|| providers|| subjects) return res.status(400).send({ error:'Dados insuficientes!'});
+
+    try {
+        const day = await Day.update(req.body);                                                         
+        return res.status(201).send({day});
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Erro ao buscar projeto!' });
+    }
+});
+router.get('/showDay', async (req, res) => {
+    try {
+        const day = await Day.find({});
+        return res.send(day);
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Erro na consulta de usuários!' });
+    }
+});
+
 
 
 

@@ -7,7 +7,7 @@ const config = require('../config/config');
 
 //FUNÇÕES AUXILIARES
 const createUserToken = (userId) => {
-    return jwt.sign({ id: userId }, config.jwt_pass, { expiresIn: config.jwt_expires_in });
+    //refazer
 }
 
 router.get('/', async (req, res) => {
