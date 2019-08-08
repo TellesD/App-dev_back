@@ -5,14 +5,14 @@ const config = () => {
         case 'dev':
         return {
             bd_string: 'mongodb+srv://user-admin:Vic199931@cluster-dev-mfzfs.mongodb.net/test?retryWrites=true&w=majority',
-            jwt_pass: 'App-dev',
+            jwt_pass: 'aj18di12*i2ls8*12dklc-lc;19xk,quoew',
             jwt_expires_in: '7d'
         }
 
         case 'hml':
         return {    
             bd_string: 'mongodb+srv://user-admin:Vic199931@cluster-dev-mfzfs.mongodb.net/test?retryWrites=true&w=majority',
-            jwt_pass: 'App-dev',
+            jwt_pass: 'aj18di12*i2ls8*12dklc-lc;19xk,quoew',
             jwt_expires_in: '7d'
         }
 

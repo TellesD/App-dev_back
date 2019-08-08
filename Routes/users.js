@@ -7,7 +7,7 @@ const config = require('../config/config');
 
 //FUNÇÕES AUXILIARES
 const createUserToken = (userId) => {
-    //refazer
+    return jwt.sign({ id: userId }, config.jwt_pass, { expiresIn: config.jwt_expires_in });
 }
 
 router.get('/', async (req, res) => {
@@ -24,7 +24,6 @@ router.post('/create', async (req, res) => {
     const { nick, password, name, age, number } = req.body;
     if (!nick || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
     if (!name || !age || !number) return res.status(400).send({ error: 'Dados insuficientes!' });
-
     try {
         if (await Users.findOne({ nick })) return res.status(400).send({ error: 'Usuário já registrado!'});
         if (await Users.findOne({ number })) return res.status(400).send({ error: 'Usuário já registrado!'});
