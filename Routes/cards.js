@@ -5,7 +5,31 @@ const Tags = require('../model/tags');
 const Archs = require('../model/arch');
 const Materials = require('../model/materials');
 const Day= require('../model/day');
+const User= require('../model/user')
 const config = require('../config/config');
+
+const fav= (cardId ,  id) => {
+    User.findById(id, function(err, user) {
+        try{
+          console.log(user)
+          user.like_id.push(cardId);
+            user.save((err) => {
+              if(err) {
+                  Console.log(id);
+                return res.status(400);
+              } else {
+      
+                  return;
+              }
+          });
+         
+      }
+        catch(err){
+            return res.status(400);
+        }
+    })
+    
+}
 //cards
 router.post('/createCard', async (req, res) => {
     const { picture, photographer, description, size, arch, year, providers, style, subjects, like } = req.body;
@@ -110,6 +134,7 @@ router.get('/showMaterials', async (req, res) => {
 //like
 router.put('/likecard/:id', async (req, res) =>{
     const id = req.params.id;
+    const {user_id}= req.headers;
     
       Cards.findById(id, function(err, cards) {
           try{
@@ -120,7 +145,8 @@ router.put('/likecard/:id', async (req, res) =>{
                     Console.log(id);
                   return res.status(400);
                 } else {
-                    return res.status(200).send({cards});
+                         console.log(user_id);   
+                    return res.status(200).send( { token: fav(id, user_id)});
                 }
             });
            

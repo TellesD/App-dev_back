@@ -21,28 +21,28 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    const { nick, password, name, age, number } = req.body;
-    if (!nick || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
-    if (!name || !age || !number) return res.status(400).send({ error: 'Dados insuficientes!' });
+    const { email, password, name, ocupation, number } = req.body;
+    //if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes! 1' });
+    //if (!name || !ocupation || !number) return res.status(400).send({ error: 'Dados insuficientes! 2' });
     try {
-        if (await Users.findOne({ nick })) return res.status(400).send({ error: 'Usuário já registrado!'});
+        if (await Users.findOne({ email })) return res.status(400).send({ error: 'Usuário já registrado!'});
         if (await Users.findOne({ number })) return res.status(400).send({ error: 'Usuário já registrado!'});
 
         const user = await Users.create(req.body);
         return res.status(201).send( { user,token: createUserToken (user.id) } );
     }
     catch (err) {
-        return res.status(500).send( {error:'Erro ao buscar usuário!'} );
+        return res.status(500).send( {error:'Erro ao buscar usuário! 1'} );
     }
 });
 
 router.post('/auth', async (req, res) => {
-    const { nick, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!nick|| !password) return res.status(400).send({ error: 'Dados insuficientes!' });
+    if (!email|| !password) return res.status(400).send({ error: 'Dados insuficientes!' });
 
     try {
-        const user = await Users.findOne({ nick }).select('+password');
+        const user = await Users.findOne({ email }).select('+password');
         if (!user) return res.status(400).send({ error: 'Usuário não registrado!' });
 
         const pass_ok = await bcrypt.compare(password, user.password);

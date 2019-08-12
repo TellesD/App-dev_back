@@ -13,6 +13,7 @@ const CardSchema = new Schema({
     style: { type: Array, required: false },
     subjects: {type: Array, required: false},
     like: {type: String, required: false},
+    
     created: { type: Date, default: Date.now }
 });
 
