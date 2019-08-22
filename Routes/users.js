@@ -22,8 +22,8 @@ router.get('/', async (req, res) => {
 
 router.post('/create', async (req, res) => {
     const { email, password, name, ocupation, number } = req.body;
-    //if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes! 1' });
-    //if (!name || !ocupation || !number) return res.status(400).send({ error: 'Dados insuficientes! 2' });
+    //if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
+    //if (!name || !ocupation || !number) return res.status(400).send({ error: 'Dados insuficientes!' });
     try {
         if (await Users.findOne({ email })) return res.status(400).send({ error: 'Usuário já registrado!'});
         if (await Users.findOne({ number })) return res.status(400).send({ error: 'Usuário já registrado!'});
@@ -32,7 +32,7 @@ router.post('/create', async (req, res) => {
         return res.status(201).send( { user,token: createUserToken (user.id) } );
     }
     catch (err) {
-        return res.status(500).send( {error:'Erro ao buscar usuário! 1'} );
+        return res.status(500).send( {error:'Erro ao buscar usuário! '} );
     }
 });
 
@@ -53,7 +53,9 @@ router.post('/auth', async (req, res) => {
         return res.send({ user, token: createUserToken(user.id) });
     }
     catch (err) {
+        
         return res.status(500).send({ error: 'Erro ao buscar usuário!' });
+    
     }
 });
 

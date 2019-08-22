@@ -8,7 +8,8 @@ const Day= require('../model/day');
 const User= require('../model/user')
 const config = require('../config/config');
 
-const fav= (cardId ,  id) => {
+//favoritos
+const fav= (cardId ,id) => {
     User.findById(id, function(err, user) {
         try{
           console.log(user)
@@ -17,7 +18,7 @@ const fav= (cardId ,  id) => {
               if(err) {
                   Console.log(id);
                 return res.status(400);
-              } else {
+              } else { 
       
                   return;
               }
@@ -30,6 +31,53 @@ const fav= (cardId ,  id) => {
     })
     
 }
+
+const desfav= (cardId ,  id) => {
+    User.findById(id, function(err, user) {
+        try{
+        
+        var index = user.like_id.indexOf(cardId);
+
+        user.like_id.splice(index);
+        
+        user.save((err) => {
+            if(err) {
+               
+              return 
+            } else {
+                    
+                return 
+            }
+        });
+
+         
+         
+      }
+        catch(err){
+            return 
+        }
+    })
+    
+}
+
+
+router.get('/showFavCard', async (req, res) => {
+    const {user_id}= req.headers;
+    let cards = [];
+    User.findById(user_id, function(err, user) {
+        try {
+            cards = Cards.find( { _id : { $in : user.like_id } } );
+            console.log(cards);
+            return res.send(cards);
+        } 
+        catch (err) {
+            console.log(err);
+            return res.status(500).send({ error: 'Erro na consulta de usuários!' });
+        }
+});
+});
+
+
 //cards
 router.post('/createCard', async (req, res) => {
     const { picture, photographer, description, size, arch, year, providers, style, subjects, like } = req.body;
@@ -54,6 +102,7 @@ router.get('/showCard', async (req, res) => {
         return res.status(500).send({ error: 'Erro na consulta de usuários!' });
     }
 });
+
 //style
 router.post('/createTag', async (req, res) => {
     const {tag} = req.body;
@@ -79,6 +128,7 @@ router.get('/showTags', async (req, res) => {
         return res.status(500).send({ error: 'Erro na consulta de Stylos!' });
     }
 });
+
 //arch
 router.post('/createArch', async (req, res) => {
     const {arch} = req.body;
@@ -105,6 +155,7 @@ router.get('/showArch', async (req, res) => {
         return res.status(500).send({ error: 'Erro na consulta de archs!' });
     }
 });
+
 //materials
 router.post('/createMaterial', async (req, res) => {
     const {material} = req.body;
@@ -131,22 +182,26 @@ router.get('/showMaterials', async (req, res) => {
         return res.status(500).send({ error: 'Erro na consulta de archs!' });
     }
 });
+
 //like
 router.put('/likecard/:id', async (req, res) =>{
     const id = req.params.id;
     const {user_id}= req.headers;
     
-      Cards.findById(id, function(err, cards) {
+    if (!user_id) return res.status(400).send({ error: 'Dados insuficientes!' }); 
+    
+    Cards.findById(id, function(err, cards) {
           try{
             console.log(cards)
               cards.like++;
+              
               cards.save((err) => {
                 if(err) {
                     Console.log(id);
                   return res.status(400);
                 } else {
                          console.log(user_id);   
-                    return res.status(200).send( { token: fav(id, user_id)});
+                    return res.status(200).send( fav(id, user_id));
                 }
             });
            
@@ -158,12 +213,38 @@ router.put('/likecard/:id', async (req, res) =>{
       
 })
 
+router.put('/unlikecard/:id', async (req, res) =>{
+    const id = req.params.id;
+    const {user_id}= req.headers;
+    
+      Cards.findById(id, function(err, cards) {
+          try{
+            console.log(cards)
+              cards.like--;
+              cards.save((err) => {
+                if(err) {
+                    Console.log(id);
+                  return res.status(400);
+                } else {
+                         console.log(user_id);   
+                    return res.status(200).send(desfav(id, user_id));
+                }
+            });
+           
+        }
+          catch(err){
+              return res.status(400);
+          }
+      })
+
+})
+
 //day
 router.put('/createDay', async (req, res) => {
     const { picture, photographer, description, size, arch, year, providers, style, subjects,textW, like } = req.body;
-   // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
-   // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!'});
-    //if (style|| providers|| subjects) return res.status(400).send({ error:'Dados insuficientes!'});
+// if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
+// if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!'});
+//if (style|| providers|| subjects) return res.status(400).send({ error:'Dados insuficientes!'});
 
     try {
         const day = await Day.update(req.body);                                                         
@@ -173,6 +254,7 @@ router.put('/createDay', async (req, res) => {
         return res.status(500).send({ error: 'Erro ao buscar projeto!' });
     }
 });
+
 router.get('/showDay', async (req, res) => {
     try {
         const day = await Day.find({});
