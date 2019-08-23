@@ -64,17 +64,19 @@ const desfav= (cardId ,  id) => {
 router.get('/showFavCard', async (req, res) => {
     const {user_id}= req.headers;
     let cards = [];
-    User.findById(user_id, function(err, user) {
-        try {
-            cards = Cards.find( { _id : { $in : user.like_id } } );
-            console.log(cards);
-            return res.send(cards);
-        } 
-        catch (err) {
-            console.log(err);
-            return res.status(500).send({ error: 'Erro na consulta de usuários!' });
-        }
-});
+    const user = await User.findById(user_id);
+    try {
+        console.log(user.like_id);
+        cards = await Cards.find( { _id : { $in : user.like_id } } );
+        console.log(cards);
+        return res.send(cards);
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).send({ error: 'Erro na consulta de usuários!' });
+    }
+   
+
 });
 
 
