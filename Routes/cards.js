@@ -11,52 +11,38 @@ const config = require('../config/config');
 //favoritos
 const fav= (cardId ,id) => {
     User.findById(id, function(err, user) {
-        try{
-          console.log(user)
+
           user.like_id.push(cardId);
-            user.save((err) => {
-              if(err) {
-                  Console.log(id);
-                return res.status(400);
-              } else { 
-      
-                  return;
-              }
-          });
+        
+          user.save((err) => {
+        
+            return;
+        
+        });
          
-      }
-        catch(err){
-            return res.status(400);
-        }
+      
+     
     })
     
 }
 
 const desfav= (cardId ,  id) => {
     User.findById(id, function(err, user) {
-        try{
         
         var index = user.like_id.indexOf(cardId);
 
         user.like_id.splice(index);
         
         user.save((err) => {
-            if(err) {
                
               return 
-            } else {
-                    
-                return 
-            }
+           
         });
 
          
          
-      }
-        catch(err){
-            return 
-        }
-    })
+      
+    });
     
 }
 
@@ -70,7 +56,7 @@ router.get('/showFavCard', async (req, res) => {
         cards = await Cards.find( { _id : { $in : user.like_id } } );
         console.log(cards);
         return res.send(cards);
-    }
+    }  
     catch (err) {
         console.log(err);
         return res.status(500).send({ error: 'Erro na consulta de usuários!' });
@@ -82,7 +68,7 @@ router.get('/showFavCard', async (req, res) => {
 
 //cards
 router.post('/createCard', async (req, res) => {
-    const { picture, photographer, description, size, arch, year, providers, style, subjects, like } = req.body;
+    const { picture, photographer, description, size, arch, year, providers, style, subjects, like,status  } = req.body;
    // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
    // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!' });
     //if (style|| providers|| subjects) return res.status(400).send({ error: 'Dados insuficientes!' });
@@ -96,10 +82,27 @@ router.post('/createCard', async (req, res) => {
     }
 });
 router.get('/showCard', async (req, res) => {
-    try {
-        const cards = await Cards.find({});
-        return res.send(cards);
+    const {user_id}= req.headers;
+
+    const user = await User.findById(user_id);
+             try {  
+                for (var i = 0; i < user.like_id.length; i++) { 
+                    id=user.like_id[i];
+                 Cards.findById(id, function(err, cards) {
+                
+                cards.status= "like"
+                console.log(cards.status);
+               return
+                      } )
+    
+                     } 
+
+           
+           const cards = await Cards.find({});
+           return res.send(cards);  
+        
     }
+
     catch (err) {
         return res.status(500).send({ error: 'Erro na consulta de usuários!' });
     }
@@ -190,7 +193,7 @@ router.put('/likecard/:id', async (req, res) =>{
     const id = req.params.id;
     const {user_id}= req.headers;
     
-    if (!user_id) return res.status(400).send({ error: 'Dados insuficientes!' }); 
+    if (!user_id) return res.status(400).send( { error: 'Dados insuficientes!' }); 
     
     Cards.findById(id, function(err, cards) {
           try{
@@ -222,7 +225,7 @@ router.put('/unlikecard/:id', async (req, res) =>{
       Cards.findById(id, function(err, cards) {
           try{
             console.log(cards)
-              cards.like--;
+              cards.like-- ; 
               cards.save((err) => {
                 if(err) {
                     Console.log(id);
@@ -243,7 +246,7 @@ router.put('/unlikecard/:id', async (req, res) =>{
 
 //day
 router.put('/createDay', async (req, res) => {
-    const { picture, photographer, description, size, arch, year, providers, style, subjects,textW, like } = req.body;
+    const { picture, photographer, description, size, arch, year, providers, style, subjects,textW, like, status } = req.body;
 // if (picture || photographer || description) return res.status(400).send({ error: 'Dados insuficientes!' });
 // if (size || arch || year) return res.status(400).send({ error: 'Dados insuficientes!'});
 //if (style|| providers|| subjects) return res.status(400).send({ error:'Dados insuficientes!'});

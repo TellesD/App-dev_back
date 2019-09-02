@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
-    email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true, select: false },
-    name: { type: String, required: true },
-    ocupation: { type: String, required: true },
-    number: { type: String, required: true, unique: true  },
-    like_id: { type: Array, required: true  },
+    email: { type: String, required: false, unique: true, lowercase: true },
+    password: { type: String, required: false, select: false },
+    name: { type: String, required: false },
+    ocupation: { type: String, required: false},
+    telephone: { type: String, required: false, unique: true  },
+    like_id: { type: Array, required: false  },
     created: { type: Date, default: Date.now }
 });
 

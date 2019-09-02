@@ -21,12 +21,12 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    const { email, password, name, ocupation, number } = req.body;
+    const { email, password, name, ocupation, telephone } = req.body;
     //if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
     //if (!name || !ocupation || !number) return res.status(400).send({ error: 'Dados insuficientes!' });
     try {
         if (await Users.findOne({ email })) return res.status(400).send({ error: 'Usuário já registrado!'});
-        if (await Users.findOne({ number })) return res.status(400).send({ error: 'Usuário já registrado!'});
+        if (await Users.findOne({ telephone })) return res.status(400).send({ error: 'Usuário já registrado!'});
 
         const user = await Users.create(req.body);
         return res.status(201).send( { user,token: createUserToken (user.id) } );

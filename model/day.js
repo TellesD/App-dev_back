@@ -15,6 +15,7 @@ const DaySchema = new Schema({
     subjects: {type: Array, required: false},
     textW:{type: String, required: false},
     like: {type: String, required: false},
+    status:  {type: String, required: false},
     created: { type: Date, default: Date.now }
 });
 
