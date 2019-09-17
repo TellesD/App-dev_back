@@ -85,27 +85,47 @@ router.get('/showCard', async (req, res) => {
     const {user_id}= req.headers;
 
     const user = await User.findById(user_id);
-             try {  
-                for (var i = 0; i < user.like_id.length; i++) { 
-                    id=user.like_id[i];
-                 Cards.findById(id, function(err, cards) {
-                
-                cards.status= "like"
-                console.log(cards.status);
-               return
-                      } )
-    
-                     } 
+    console.log(user);
+    const cardsNotLike = await Cards.find({ _id: { $nin: user.like_id } })
+    const cardsLike = await Cards.find({ _id: { $in: user.like_id } })
+    cardsLike.forEach((card) => {
+        card.status = 'like';
+    });
 
-           
-           const cards = await Cards.find({});
-           return res.send(cards);  
+    const cards = cardsNotLike.concat(cardsLike); 
+    console.log(cards);
+
+
+ /*    try { 
         
+        
+    for (var i = 0; i < user.like_id.length; i++) { 
+        id=user.like_id[i];
+        Cards.findById(id, function(err, cardsp) {
+
+    cardsp.status= "like"
+
+            } )
+
+            } 
+
+            var Cards = array.filter( function( id, card ) {
+                
+                    card.push(id !== user.like_id);
+                    console.log(card);
+            return                     
+                } );
+            
+
+    //esse return ta sem mudança ainda ta retornando todos os cards aleatoriamente 
+    const cards = await Cards.find({});
+    return res.send(cards);  
+
     }
 
     catch (err) {
         return res.status(500).send({ error: 'Erro na consulta de usuários!' });
-    }
+    } */
 });
 
 //style
