@@ -93,39 +93,9 @@ router.get('/showCard', async (req, res) => {
     });
 
     const cards = cardsNotLike.concat(cardsLike); 
-    console.log(cards);
-
-
- /*    try { 
-        
-        
-    for (var i = 0; i < user.like_id.length; i++) { 
-        id=user.like_id[i];
-        Cards.findById(id, function(err, cardsp) {
-
-    cardsp.status= "like"
-
-            } )
-
-            } 
-
-            var Cards = array.filter( function( id, card ) {
-                
-                    card.push(id !== user.like_id);
-                    console.log(card);
-            return                     
-                } );
-            
-
-    //esse return ta sem mudança ainda ta retornando todos os cards aleatoriamente 
-    const cards = await Cards.find({});
+   
     return res.send(cards);  
 
-    }
-
-    catch (err) {
-        return res.status(500).send({ error: 'Erro na consulta de usuários!' });
-    } */
 });
 
 //style
